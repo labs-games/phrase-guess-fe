@@ -16,21 +16,29 @@ const StyledHeader = styled(Layout.Header)`
   line-height: 48px;
 `;
 
+const StyledBody = styled(Layout)`
+  min-height: 100vh;
+`;
+
+const StyledPage = styled(Layout)`
+  min-height: 100%;
+`;
+
 function HomePage() {
   return (
     <Auth>
-      <Layout>
+      <StyledBody>
         <StyledHeader>
           <Navbar />
         </StyledHeader>
-        <Layout>
+        <StyledPage>
           <Switch>
             <Route path="/games" component={GamesPage} />
             <Route path="" component={WelcomePage} />
             <Redirect to="" />
           </Switch>
-        </Layout>
-      </Layout>
+        </StyledPage>
+      </StyledBody>
     </Auth>
   );
 }

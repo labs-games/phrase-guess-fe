@@ -6,7 +6,7 @@ import { Menu } from 'antd';
 
 function Navbar() {
   return (
-    <Menu mode="horizontal" theme="dark">
+    <Menu mode="horizontal" theme="dark" selectedKeys={[]}>
       <Menu.Item>
         <Link to="">Home</Link>
       </Menu.Item>
