@@ -1,4 +1,4 @@
-import { Ordering } from './enums';
+import { GuessStatuses, GuessTypes, Orderings } from './enums';
 import { PaginatedResponse } from './interfaces';
 
 export interface GetMeResponse {
@@ -19,8 +19,8 @@ export interface LoginResponse {
 export interface Game {
   id: number;
   name: string;
-  phraseOrder: Ordering;
-  teamOrder: Ordering;
+  phraseOrder: Orderings;
+  teamOrder: Orderings;
 }
 
 export interface GetResourcesResponse<Resource> extends PaginatedResponse {
@@ -52,4 +52,24 @@ export interface Round {
   isEnded: boolean;
   phraseId: number;
   teamOrdering: number[];
+}
+
+export interface GetRoundResponse extends Round {}
+
+export interface GetPhraseResponse extends Phrase {}
+
+export interface Guess {
+  id: number;
+  teamId: number;
+  type: GuessTypes;
+  status: GuessStatuses;
+  value: string;
+  score: number;
+}
+
+export interface CreateGuessResponse {
+  status: GuessStatuses;
+  score: number;
+  teamId: number;
+  shouldEnd: boolean;
 }

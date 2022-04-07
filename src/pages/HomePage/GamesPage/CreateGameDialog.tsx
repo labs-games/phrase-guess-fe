@@ -9,7 +9,7 @@ import useRequest from 'hooks/useRequest';
 import useResetableState from 'hooks/useResetableState';
 import useToast from 'hooks/useToast';
 import { OrderingDisplays } from 'utils/displays';
-import { Ordering } from 'utils/enums';
+import { Orderings } from 'utils/enums';
 
 interface CreateGameDialogProps {
   handleClose: () => void;
@@ -19,9 +19,9 @@ interface CreateGameDialogProps {
 
 function CreateGameDialog({ handleClose, isOpen, onCreate }: CreateGameDialogProps) {
   const [name, setName, resetName] = useResetableState('');
-  const [teamOrdering, setTeamOrdering, resetTeamOrdering] = useResetableState(Ordering.random);
+  const [teamOrdering, setTeamOrdering, resetTeamOrdering] = useResetableState(Orderings.random);
   const [phraseOrdering, setPhraseOrdering, resetPhraseOrdering] = useResetableState(
-    Ordering.random
+    Orderings.random
   );
   const resetState = () => {
     resetName();
@@ -77,21 +77,21 @@ function CreateGameDialog({ handleClose, isOpen, onCreate }: CreateGameDialogPro
         </Form.Item>
         <Form.Item label={<BoldLabel>Team Ordering</BoldLabel>}>
           <Select value={teamOrdering} onChange={setTeamOrdering}>
-            <Select.Option value={Ordering.random} key={Ordering.random}>
-              {OrderingDisplays[Ordering.random]}
+            <Select.Option value={Orderings.random} key={Orderings.random}>
+              {OrderingDisplays[Orderings.random]}
             </Select.Option>
-            <Select.Option value={Ordering.ordered} key={Ordering.ordered}>
-              {OrderingDisplays[Ordering.ordered]}
+            <Select.Option value={Orderings.ordered} key={Orderings.ordered}>
+              {OrderingDisplays[Orderings.ordered]}
             </Select.Option>
           </Select>
         </Form.Item>
         <Form.Item label={<BoldLabel>Phrase Ordering</BoldLabel>}>
           <Select value={phraseOrdering} onChange={setPhraseOrdering}>
-            <Select.Option value={Ordering.random} key={Ordering.random}>
-              {OrderingDisplays[Ordering.random]}
+            <Select.Option value={Orderings.random} key={Orderings.random}>
+              {OrderingDisplays[Orderings.random]}
             </Select.Option>
-            <Select.Option value={Ordering.ordered} key={Ordering.ordered}>
-              {OrderingDisplays[Ordering.ordered]}
+            <Select.Option value={Orderings.ordered} key={Orderings.ordered}>
+              {OrderingDisplays[Orderings.ordered]}
             </Select.Option>
           </Select>
         </Form.Item>

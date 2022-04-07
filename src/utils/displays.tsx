@@ -1,6 +1,11 @@
-import { Ordering } from './enums';
+import { GuessTypes, Orderings } from './enums';
 
 export const OrderingDisplays = {
-  [Ordering.ordered]: 'Ordered',
-  [Ordering.random]: 'Random',
+  [Orderings.ordered]: 'Ordered',
+  [Orderings.random]: 'Random',
+};
+
+export const GuessTypeDisplays = {
+  [GuessTypes.letter]: 'Letter',
+  [GuessTypes.phrase]: 'Phrase',
 };

@@ -67,12 +67,6 @@ export interface Pagination {
   dbEntriesSize: number;
 }
 
-export interface TableRowRenderProps<T> {
-  record: T;
-  children: ReactNode;
-  index: number;
-}
-
 export interface PaginatedResponse {
   pagination: Pagination;
 }
