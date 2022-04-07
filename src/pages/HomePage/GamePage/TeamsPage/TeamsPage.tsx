@@ -12,7 +12,7 @@ import { GameParams } from 'utils/interfaces';
 
 import CreateTeamDialog from './CreateTeamDialog';
 
-const columns = [{ title: 'Name', dataIndex: 'name', key: 'name' }];
+const columns = [{ title: 'Team', dataIndex: 'name', key: 'name' }];
 
 interface TeamsTableProps {
   teams: Team[];

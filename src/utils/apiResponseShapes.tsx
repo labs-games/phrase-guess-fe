@@ -40,3 +40,8 @@ export interface Team {
   id: number;
   name: string;
 }
+
+export interface Phrase {
+  id: number;
+  value: string;
+}
