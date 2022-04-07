@@ -7,7 +7,7 @@ import { Button, PageHeader, Table } from 'antd';
 import { Paper } from 'components/common';
 import useApiQuery from 'hooks/useApiQuery';
 import useIsOpen from 'hooks/useIsOpen';
-import { Game, GetGamesResponse } from 'utils/apiResponseShapes';
+import { Game, GetResourcesResponse } from 'utils/apiResponseShapes';
 import { OrderingDisplays } from 'utils/displays';
 
 import CreateGameDialog from './CreateGameDialog';
@@ -44,7 +44,7 @@ function GamesTable({ games }: GamesTableProps) {
 }
 
 function GamesPage() {
-  const { response, refresh } = useApiQuery<GetGamesResponse>('/api/games/');
+  const { response, refresh } = useApiQuery<GetResourcesResponse<Game>>('/api/games/');
   const [isOpen, setIsOpen, handleClose] = useIsOpen();
 
   return (

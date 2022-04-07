@@ -23,8 +23,8 @@ export interface Game {
   teamOrder: Ordering;
 }
 
-export interface GetGamesResponse extends PaginatedResponse {
-  items: Game[];
+export interface GetResourcesResponse<Resource> extends PaginatedResponse {
+  items: Resource[];
 }
 
 export interface TeamLeaderboard {
@@ -34,4 +34,9 @@ export interface TeamLeaderboard {
 
 export interface GetGameResponse extends Game {
   leaderboard: TeamLeaderboard[];
+}
+
+export interface Team {
+  id: number;
+  name: string;
 }
