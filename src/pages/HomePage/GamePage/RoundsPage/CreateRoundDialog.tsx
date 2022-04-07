@@ -28,6 +28,7 @@ function CreateRoundDialog({
   initialName,
 }: CreateRoundDialogProps) {
   const [name, setName, resetName] = useResetableState(initialName);
+
   const [startingTeamId, setStartingTeamId, resetStartingTeamId] = useResetableState(teams[0].id);
   const resetState = () => {
     resetName();

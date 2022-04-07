@@ -1,5 +1,6 @@
 import React from 'react';
 
+import isEmpty from 'lodash/isEmpty';
 import { useHistory, useParams, useRouteMatch } from 'react-router-dom';
 
 import { Button, PageHeader, Table } from 'antd';
@@ -57,7 +58,7 @@ function RoundsPage() {
       <PageHeader
         title="Rounds List"
         extra={
-          response && teamsResponse
+          response && teamsResponse && !isEmpty(teamsResponse.items)
             ? [
                 <Button onClick={() => setIsOpen(true)} type="primary" key="button">
                   Add New
