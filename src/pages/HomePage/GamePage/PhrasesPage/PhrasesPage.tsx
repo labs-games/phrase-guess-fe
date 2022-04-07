@@ -23,10 +23,10 @@ function PhrasesTable({ phrases }: PhrasesTableProps) {
     <Table
       bordered
       columns={columns}
-      dataSource={phrases.map(g => ({
-        id: g.id,
-        key: g.id,
-        value: g.value,
+      dataSource={phrases.map(p => ({
+        id: p.id,
+        key: p.id,
+        value: p.value,
       }))}
     />
   );

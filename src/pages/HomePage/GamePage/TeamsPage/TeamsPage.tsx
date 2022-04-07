@@ -23,10 +23,10 @@ function TeamsTable({ teams }: TeamsTableProps) {
     <Table
       bordered
       columns={columns}
-      dataSource={teams.map(g => ({
-        id: g.id,
-        key: g.id,
-        name: g.name,
+      dataSource={teams.map(t => ({
+        id: t.id,
+        key: t.id,
+        name: t.name,
       }))}
     />
   );

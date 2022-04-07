@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { Layout } from 'antd';
 
 import GameSidebar from './GameSidebar';
+import GuessPage from './GuessPage';
 import InfoPage from './InfoPage';
 import LeaderboardPage from './LeaderboardPage';
 import PhrasesPage from './PhrasesPage';
@@ -35,6 +36,7 @@ function GamePage() {
           <Route path="/games/:gameId/info" component={InfoPage} />
           <Route path="/games/:gameId/teams" component={TeamsPage} />
           <Route path="/games/:gameId/phrases" component={PhrasesPage} />
+          <Route path="/games/:gameId/rounds/:roundId/guess" component={GuessPage} />
           <Route path="/games/:gameId/rounds" component={RoundsPage} />
           <Redirect to="/games/:gameId/info" />
         </Switch>

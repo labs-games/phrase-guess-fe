@@ -19,10 +19,10 @@ const getSelectedKey = (fullPathName: string): string => {
   if (fullPathName.endsWith('phrases')) {
     return '3';
   }
-  if (fullPathName.endsWith('rounds')) {
-    return '4';
+  if (fullPathName.endsWith('leaderboard')) {
+    return '5';
   }
-  return '5';
+  return '4';
 };
 
 function GameSidebar() {

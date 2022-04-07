@@ -80,3 +80,8 @@ export interface PaginatedResponse {
 export interface GameParams {
   gameId: string;
 }
+
+export interface RoundParams {
+  gameId: string;
+  roundId: string;
+}

@@ -45,3 +45,11 @@ export interface Phrase {
   id: number;
   value: string;
 }
+
+export interface Round {
+  id: number;
+  name: string;
+  isEnded: boolean;
+  phraseId: number;
+  teamOrdering: number[];
+}
