@@ -8,6 +8,7 @@ import { Layout } from 'antd';
 import Auth from 'components/Auth';
 import Navbar from 'components/Navbar';
 
+import GamePage from './GamePage';
 import GamesPage from './GamesPage';
 import WelcomePage from './WelcomePage';
 
@@ -33,6 +34,7 @@ function HomePage() {
         </StyledHeader>
         <StyledPage>
           <Switch>
+            <Route path="/games/:gameId" component={GamePage} />
             <Route path="/games" component={GamesPage} />
             <Route path="" component={WelcomePage} />
             <Redirect to="" />

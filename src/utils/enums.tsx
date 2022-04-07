@@ -23,3 +23,8 @@ export enum FieldErrorCodes {
 
 export type HttpMethod = 'get' | 'post' | 'patch' | 'delete';
 export type HttpRequestStatus = 'idle' | 'pending' | 'success' | 'failed';
+
+export enum Ordering {
+  ordered = 1,
+  random = 2,
+}
