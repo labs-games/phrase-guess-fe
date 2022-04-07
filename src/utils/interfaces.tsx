@@ -21,12 +21,12 @@ export type HttpResponse<TResPayload, TResError> =
   | HttpResponseFailure<TResError>;
 
 export interface HttpResponseSuccess<TResPayload> {
-  errorCode: ErrorCodes.NoError;
+  code: ErrorCodes.NoError;
   data: TResPayload;
 }
 
 export interface HttpResponseFailure<TResError> {
-  errorCode: Exclude<ErrorCodes, ErrorCodes.NoError>;
+  code: Exclude<ErrorCodes, ErrorCodes.NoError>;
   data: ErrorData<TResError>;
 }
 

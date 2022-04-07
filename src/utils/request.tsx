@@ -8,11 +8,12 @@ import { FetchError, NetworkError } from 'utils/errors';
 import { RequestOption, HttpResponse, DefaultErrorDetail } from 'utils/interfaces';
 
 export default async function request<TResPayload, TResError = DefaultErrorDetail>(
-  url: string,
+  path: string,
   method: HttpMethod,
   body?: object,
   options: RequestOption = {}
 ) {
+  const url = `${process.env.REACT_APP_DOMAIN}${path}`;
   const { header = {}, init = {} } = options;
   const { jwt } = parse(document.cookie);
 
@@ -24,6 +25,7 @@ export default async function request<TResPayload, TResError = DefaultErrorDetai
   const res = await Promise.race([
     fetch(url, {
       method,
+      credentials: 'include',
       body: bodyPayload,
       headers: new Headers({
         Authorization: `Bearer ${jwt}`,
@@ -40,7 +42,7 @@ export default async function request<TResPayload, TResError = DefaultErrorDetai
     deep: true,
   });
 
-  if (json.errorCode !== ErrorCodes.NoError) {
+  if (json.code !== ErrorCodes.NoError) {
     throw new FetchError(json);
   }
 

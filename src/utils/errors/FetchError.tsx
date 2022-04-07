@@ -14,17 +14,17 @@ class FetchError<TResPayload, TResError = DefaultErrorDetail> extends Error {
 
   constructor(response: HttpResponse<TResPayload, TResError>) {
     super();
-    this.code = response.errorCode;
+    this.code = response.code;
     this.validationErrorDetails =
-      response.errorCode === ErrorCodes.NoError
+      response.code === ErrorCodes.NoError
         ? undefined
-        : response.data.validationErrorDetails.map(detail => ({
+        : response.data.validationErrorDetails?.map(detail => ({
             ...detail,
             path: detail.path.map(val => (typeof val === 'string' ? camelCase(val) : val)),
           }));
-    this.data = response.errorCode === ErrorCodes.NoError ? response.data : undefined;
+    this.data = response.code === ErrorCodes.NoError ? response.data : undefined;
     this.errorDetails =
-      response.errorCode === ErrorCodes.NoError ? undefined : response.data.errorDetails;
+      response.code === ErrorCodes.NoError ? undefined : response.data.errorDetails;
   }
 }
 
