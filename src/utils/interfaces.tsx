@@ -76,3 +76,7 @@ export interface TableRowRenderProps<T> {
 export interface PaginatedResponse {
   pagination: Pagination;
 }
+
+export interface GameParams {
+  gameId: string;
+}

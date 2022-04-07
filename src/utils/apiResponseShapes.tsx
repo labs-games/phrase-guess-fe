@@ -26,3 +26,12 @@ export interface Game {
 export interface GetGamesResponse extends PaginatedResponse {
   items: Game[];
 }
+
+export interface TeamLeaderboard {
+  teamId: number;
+  totalScore: number;
+}
+
+export interface GetGameResponse extends Game {
+  leaderboard: TeamLeaderboard[];
+}
