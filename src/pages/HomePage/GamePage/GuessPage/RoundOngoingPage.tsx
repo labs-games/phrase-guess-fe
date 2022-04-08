@@ -4,7 +4,13 @@ import hash from 'object-hash';
 import styled from 'styled-components';
 
 import useApiQuery from 'hooks/useApiQuery';
-import { GetResourcesResponse, Guess, Round, Team } from 'utils/apiResponseShapes';
+import {
+  GetPhraseResponse,
+  GetResourcesResponse,
+  Guess,
+  Round,
+  Team,
+} from 'utils/apiResponseShapes';
 
 import GuessActionBar from './GuessActionBar';
 import LettersRow from './LettersRow';
@@ -26,11 +32,15 @@ function RoundOngoingPage({ round, gameId }: RoundOngoingPageProps) {
   const { response: teamsResponse } = useApiQuery<GetResourcesResponse<Team>>(
     `/api/games/${gameId}/teams/`
   );
+  const { response: phraseResponse } = useApiQuery<GetPhraseResponse>(
+    `/api/games/${gameId}/phrases/${round.phraseId}/`
+  );
   return (
     response &&
-    teamsResponse && (
+    teamsResponse &&
+    phraseResponse && (
       <PageWrapper>
-        <LettersRow pastGuesses={response.items} round={round} gameId={gameId} />
+        <LettersRow pastGuesses={response.items} phrase={phraseResponse.value} />
         <WrongGuessesRow pastGuesses={response.items} />
         <GuessActionBar
           key={hash(response)}

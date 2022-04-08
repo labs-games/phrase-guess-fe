@@ -2,8 +2,7 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import useApiQuery from 'hooks/useApiQuery';
-import { GetPhraseResponse, Guess, Round } from 'utils/apiResponseShapes';
+import { Guess } from 'utils/apiResponseShapes';
 import { GuessStatuses, GuessTypes } from 'utils/enums';
 
 const RowWrapper = styled.div`
@@ -20,8 +19,7 @@ const RowWrapper = styled.div`
 
 interface LettersRowProps {
   pastGuesses: Guess[];
-  round: Round;
-  gameId: number;
+  phrase: string;
 }
 
 const transformPhrase = (phrase: string, pastGuesses: Guess[]): string => {
@@ -42,16 +40,11 @@ const transformPhrase = (phrase: string, pastGuesses: Guess[]): string => {
   return transformedPhrase;
 };
 
-function LettersRow({ pastGuesses, round, gameId }: LettersRowProps) {
-  const { response } = useApiQuery<GetPhraseResponse>(
-    `/api/games/${gameId}/phrases/${round.phraseId}/`
-  );
+function LettersRow({ pastGuesses, phrase }: LettersRowProps) {
   return (
-    response && (
-      <RowWrapper>
-        <pre>{transformPhrase(response.value, pastGuesses)}</pre>
-      </RowWrapper>
-    )
+    <RowWrapper>
+      <pre>{transformPhrase(phrase, pastGuesses)}</pre>
+    </RowWrapper>
   );
 }
 

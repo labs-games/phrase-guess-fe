@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { Typography } from 'antd';
 
 import useApiQuery from 'hooks/useApiQuery';
-import { GetResourcesResponse, Guess, Round } from 'utils/apiResponseShapes';
+import { GetPhraseResponse, GetResourcesResponse, Guess, Round } from 'utils/apiResponseShapes';
 
 import LettersRow from './LettersRow';
 
@@ -21,10 +21,14 @@ function RoundEndPage({ round, gameId }: RoundEndPageProps) {
   const { response } = useApiQuery<GetResourcesResponse<Guess>>(
     `/api/games/${gameId}/rounds/${round.id}/guesses/`
   );
+  const { response: phraseResponse } = useApiQuery<GetPhraseResponse>(
+    `/api/games/${gameId}/phrases/${round.phraseId}/`
+  );
   return (
-    response && (
+    response &&
+    phraseResponse && (
       <PageWrapper>
-        <LettersRow pastGuesses={response.items} round={round} gameId={gameId} />
+        <LettersRow pastGuesses={response.items} phrase={phraseResponse.value} />
         <Typography.Title level={3}>This phrase has been guessed</Typography.Title>
       </PageWrapper>
     )
