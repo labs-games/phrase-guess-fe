@@ -1,0 +1,35 @@
+import findIndex from 'lodash/findIndex';
+import last from 'lodash/last';
+
+import { Guess, Round } from './apiResponseShapes';
+import { GuessStatuses, GuessTypes } from './enums';
+
+export const getNextTeamIdToGuess = (teamIdOrderings: number[], pastGuesses: Guess[]): number => {
+  const pastLetterGuesses = pastGuesses.filter(g => g.type === GuessTypes.letter);
+  if (pastLetterGuesses.length === 0) {
+    return teamIdOrderings[0];
+  }
+
+  const lastGuess = last(pastLetterGuesses);
+  const lastTeamId = lastGuess.teamId;
+  const lastTeamIndex = findIndex(teamIdOrderings, id => id === lastTeamId);
+  if (lastTeamIndex === undefined) {
+    return teamIdOrderings[0];
+  }
+
+  if (lastGuess.status === GuessStatuses.correct) {
+    return lastTeamId;
+  }
+
+  const nextTeamIndex = (lastTeamIndex + 1) % teamIdOrderings.length;
+  return teamIdOrderings[nextTeamIndex];
+};
+
+export const getNextTeamIdToStartRound = (
+  teamIdOrderings: number[],
+  pastRounds: Round[]
+): number => {
+  const noOfPastRounds = pastRounds.length;
+  const noOfTeams = teamIdOrderings.length;
+  return teamIdOrderings[noOfPastRounds % noOfTeams];
+};

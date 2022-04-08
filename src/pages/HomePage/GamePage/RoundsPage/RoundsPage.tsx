@@ -1,6 +1,7 @@
 import React from 'react';
 
 import isEmpty from 'lodash/isEmpty';
+import hash from 'object-hash';
 import { useHistory, useParams, useRouteMatch } from 'react-router-dom';
 
 import { Button, PageHeader, Table } from 'antd';
@@ -68,9 +69,10 @@ function RoundsPage() {
                   handleClose={handleClose}
                   isOpen={isOpen}
                   onCreate={refresh}
-                  key="dialog"
+                  key={hash(teamsResponse)}
                   initialName={`Round ${response.items.length + 1}`}
                   teams={teamsResponse.items}
+                  pastRounds={response.items}
                 />,
               ]
             : []

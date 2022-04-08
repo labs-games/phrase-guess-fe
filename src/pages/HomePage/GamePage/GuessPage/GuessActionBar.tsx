@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-import findIndex from 'lodash/findIndex';
-import last from 'lodash/last';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -15,6 +13,7 @@ import useToast from 'hooks/useToast';
 import { CreateGuessResponse, Guess, Round, Team } from 'utils/apiResponseShapes';
 import { GuessTypeDisplays } from 'utils/displays';
 import { GuessStatuses, GuessTypes } from 'utils/enums';
+import { getNextTeamIdToGuess } from 'utils/nextTeam';
 
 import GuessCorrectDialog from './GuessCorrectDialog';
 import GuessWrongDialog from './GuessWrongDialog';
@@ -34,26 +33,6 @@ interface GuessActionBarProps {
   round: Round;
   gameId: number;
 }
-
-const getNextTeamIdToGuess = (teamIdOrderings: number[], pastGuesses: Guess[]): number => {
-  if (pastGuesses.length === 0) {
-    return teamIdOrderings[0];
-  }
-
-  const lastGuess = last(pastGuesses);
-  const lastTeamId = lastGuess.teamId;
-  const lastTeamIndex = findIndex(teamIdOrderings, id => id === lastTeamId);
-  if (lastTeamIndex === undefined) {
-    return teamIdOrderings[0];
-  }
-
-  if (lastGuess.status === GuessStatuses.correct) {
-    return lastTeamId;
-  }
-
-  const nextTeamIndex = (lastTeamIndex + 1) % teamIdOrderings.length;
-  return teamIdOrderings[nextTeamIndex];
-};
 
 function GuessActionBar({ pastGuesses, round, gameId, onGuess, teams }: GuessActionBarProps) {
   const [type, setType] = useState(GuessTypes.letter);

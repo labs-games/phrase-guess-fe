@@ -8,7 +8,9 @@ import useFetchErrorHandler from 'hooks/useFetchErrorHandler';
 import useRequest from 'hooks/useRequest';
 import useResetableState from 'hooks/useResetableState';
 import useToast from 'hooks/useToast';
-import { Team } from 'utils/apiResponseShapes';
+import { Round, Team } from 'utils/apiResponseShapes';
+
+import { getNextTeamIdToStartRound } from '../../../../utils/nextTeam';
 
 interface CreateRoundDialogProps {
   teams: Team[];
@@ -17,6 +19,7 @@ interface CreateRoundDialogProps {
   isOpen: boolean;
   onCreate: () => void;
   initialName: string;
+  pastRounds: Round[];
 }
 
 function CreateRoundDialog({
@@ -26,10 +29,16 @@ function CreateRoundDialog({
   isOpen,
   onCreate,
   initialName,
+  pastRounds,
 }: CreateRoundDialogProps) {
   const [name, setName, resetName] = useResetableState(initialName);
 
-  const [startingTeamId, setStartingTeamId, resetStartingTeamId] = useResetableState(teams[0].id);
+  const [startingTeamId, setStartingTeamId, resetStartingTeamId] = useResetableState(
+    getNextTeamIdToStartRound(
+      teams.map(t => t.id),
+      pastRounds
+    )
+  );
   const resetState = () => {
     resetName();
     resetStartingTeamId();
