@@ -1,5 +1,6 @@
 import React from 'react';
 
+import hash from 'object-hash';
 import { useParams } from 'react-router-dom';
 
 import { Button, PageHeader, Table } from 'antd';
@@ -54,7 +55,7 @@ function TeamsPage() {
                   handleClose={handleClose}
                   isOpen={isOpen}
                   onCreate={refresh}
-                  key="dialog"
+                  key={hash(response)}
                   initialName={`Team ${response.items.length + 1}`}
                 />,
               ]
