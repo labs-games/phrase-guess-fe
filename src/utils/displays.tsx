@@ -8,4 +8,5 @@ export const OrderingDisplays = {
 export const GuessTypeDisplays = {
   [GuessTypes.letter]: 'Letter',
   [GuessTypes.phrase]: 'Phrase',
+  [GuessTypes.timedOut]: 'Timed Out',
 };

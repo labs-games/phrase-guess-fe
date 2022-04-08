@@ -17,6 +17,7 @@ import { getNextTeamIdToGuess } from 'utils/nextTeam';
 
 import GuessCorrectDialog from './GuessCorrectDialog';
 import GuessWrongDialog from './GuessWrongDialog';
+import NextTeamTimerButton from './NextTeamTimerButton';
 
 const StyledSelect = styled(Select)`
   min-width: 150px;
@@ -97,6 +98,7 @@ function GuessActionBar({ pastGuesses, round, gameId, onGuess, teams }: GuessAct
       <Button type="primary" onClick={handleSubmit} loading={pending} disabled={value === ''}>
         Guess
       </Button>
+      <NextTeamTimerButton teamId={teamId} round={round} gameId={gameId} onTimeout={onGuess} />
       <GuessCorrectDialog
         teams={teams}
         guessResponse={guessResponse}

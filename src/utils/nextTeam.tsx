@@ -5,12 +5,12 @@ import { Guess, Round } from './apiResponseShapes';
 import { GuessStatuses, GuessTypes } from './enums';
 
 export const getNextTeamIdToGuess = (teamIdOrderings: number[], pastGuesses: Guess[]): number => {
-  const pastLetterGuesses = pastGuesses.filter(g => g.type === GuessTypes.letter);
-  if (pastLetterGuesses.length === 0) {
+  const nonPhraseGuesses = pastGuesses.filter(g => g.type !== GuessTypes.phrase);
+  if (nonPhraseGuesses.length === 0) {
     return teamIdOrderings[0];
   }
 
-  const lastGuess = last(pastLetterGuesses);
+  const lastGuess = last(nonPhraseGuesses);
   const lastTeamId = lastGuess.teamId;
   const lastTeamIndex = findIndex(teamIdOrderings, id => id === lastTeamId);
   if (lastTeamIndex === undefined) {

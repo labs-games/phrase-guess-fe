@@ -32,9 +32,11 @@ export enum Orderings {
 export enum GuessTypes {
   letter = 1,
   phrase = 2,
+  timedOut = 3,
 }
 
 export enum GuessStatuses {
   correct = 1,
   wrong = 2,
+  timedOut = 3,
 }
