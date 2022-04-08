@@ -11,10 +11,13 @@ import useApiQuery from 'hooks/useApiQuery';
 import {
   GetGameResponse,
   GetResourcesResponse,
+  Round,
   Team,
   TeamLeaderboard,
 } from 'utils/apiResponseShapes';
 import { GameParams } from 'utils/interfaces';
+
+import NextRoundButton from './NextRoundButton';
 
 const columns = [
   { title: 'Rank', dataIndex: 'rank', key: 'rank' },
@@ -53,10 +56,26 @@ function LeaderboardPage() {
   const { response: teamsResponse } = useApiQuery<GetResourcesResponse<Team>>(
     `/api/games/${gameId}/teams/`
   );
+  const { response: roundsResponse } = useApiQuery<GetResourcesResponse<Round>>(
+    `/api/games/${gameId}/rounds/`
+  );
 
   return (
     <Paper>
-      <PageHeader title="Leaderboard" />
+      <PageHeader
+        title="Leaderboard"
+        extra={
+          roundsResponse && teamsResponse
+            ? [
+                <NextRoundButton
+                  gameId={+gameId}
+                  pastRounds={roundsResponse.items}
+                  teams={teamsResponse.items}
+                />,
+              ]
+            : []
+        }
+      />
       {gameResponse && teamsResponse && (
         <LeaderboardTable teamLeaderboards={gameResponse.leaderboard} teams={teamsResponse.items} />
       )}

@@ -9,8 +9,7 @@ import useRequest from 'hooks/useRequest';
 import useResetableState from 'hooks/useResetableState';
 import useToast from 'hooks/useToast';
 import { Round, Team } from 'utils/apiResponseShapes';
-
-import { getNextTeamIdToStartRound } from '../../../../utils/nextTeam';
+import { getNextTeamIdToStartRound } from 'utils/nextTeam';
 
 interface CreateRoundDialogProps {
   teams: Team[];

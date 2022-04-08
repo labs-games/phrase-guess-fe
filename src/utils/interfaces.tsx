@@ -71,6 +71,10 @@ export interface PaginatedResponse {
   pagination: Pagination;
 }
 
+export interface CreationResponse {
+  id: number;
+}
+
 export interface GameParams {
   gameId: string;
 }
