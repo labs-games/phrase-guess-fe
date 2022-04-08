@@ -17,6 +17,7 @@ import {
 } from 'utils/apiResponseShapes';
 import { GameParams } from 'utils/interfaces';
 
+import LeaderboardGraph from './LeaderboardGraph';
 import NextRoundButton from './NextRoundButton';
 
 const columns = [
@@ -30,7 +31,7 @@ interface LeaderboardTableProps {
   teams: Team[];
 }
 
-function LeaderboardTable({ teamLeaderboards, teams }: LeaderboardTableProps) {
+export function LeaderboardTable({ teamLeaderboards, teams }: LeaderboardTableProps) {
   const teamLeaderboardsByTeamId = keyBy(teamLeaderboards, 'teamId');
   const sortedData = orderBy(
     teams.map(team => ({
@@ -77,7 +78,7 @@ function LeaderboardPage() {
         }
       />
       {gameResponse && teamsResponse && (
-        <LeaderboardTable teamLeaderboards={gameResponse.leaderboard} teams={teamsResponse.items} />
+        <LeaderboardGraph teamLeaderboards={gameResponse.leaderboard} teams={teamsResponse.items} />
       )}
     </Paper>
   );

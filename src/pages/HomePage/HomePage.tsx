@@ -15,6 +15,9 @@ import WelcomePage from './WelcomePage';
 const StyledHeader = styled(Layout.Header)`
   height: 48px;
   line-height: 48px;
+  position: fixed;
+  width: 100vw;
+  z-index: 100;
 `;
 
 const StyledBody = styled(Layout)`
@@ -23,6 +26,7 @@ const StyledBody = styled(Layout)`
 
 const StyledPage = styled(Layout)`
   min-height: 100%;
+  margin-top: 48px;
 `;
 
 function HomePage() {
