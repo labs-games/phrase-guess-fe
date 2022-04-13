@@ -14,6 +14,8 @@ import {
 
 import GuessActionBar from './GuessActionBar';
 import LettersRow from './LettersRow';
+import TimerProvider from './TimerContext';
+import TimerDisplay from './TimerDisplay';
 import WrongGuessesRow from './WrongGuessesRow';
 
 const PageWrapper = styled.div`
@@ -40,16 +42,19 @@ function RoundOngoingPage({ round, gameId }: RoundOngoingPageProps) {
     teamsResponse &&
     phraseResponse && (
       <PageWrapper>
-        <LettersRow pastGuesses={response.items} phrase={phraseResponse.value} />
-        <WrongGuessesRow pastGuesses={response.items} />
-        <GuessActionBar
-          key={hash(response)}
-          pastGuesses={response.items}
-          round={round}
-          gameId={gameId}
-          teams={teamsResponse.items}
-          onGuess={() => refresh()}
-        />
+        <TimerProvider>
+          <TimerDisplay />
+          <LettersRow pastGuesses={response.items} phrase={phraseResponse.value} />
+          <WrongGuessesRow pastGuesses={response.items} />
+          <GuessActionBar
+            key={hash(response)}
+            pastGuesses={response.items}
+            round={round}
+            gameId={gameId}
+            teams={teamsResponse.items}
+            onGuess={() => refresh()}
+          />
+        </TimerProvider>
       </PageWrapper>
     )
   );

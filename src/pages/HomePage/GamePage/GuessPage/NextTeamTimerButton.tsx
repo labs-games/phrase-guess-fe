@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import { Button } from 'antd';
 
@@ -9,6 +9,8 @@ import useToast from 'hooks/useToast';
 import { CreateGuessResponse, Round } from 'utils/apiResponseShapes';
 import { GuessTypes } from 'utils/enums';
 
+import { useTimerContext } from './TimerContext';
+
 interface NextTeamTimerButtonProps {
   teamId: number;
   round: Round;
@@ -17,18 +19,7 @@ interface NextTeamTimerButtonProps {
 }
 
 function NextTeamTimerButton({ teamId, gameId, round, onTimeout }: NextTeamTimerButtonProps) {
-  const [countDown, setCountdown] = useState(3);
-  const isTimeout = countDown === 0;
-
-  const reduceCountdown = useEventCallback(() => {
-    if (countDown > 0) {
-      setCountdown(c => c - 1);
-    }
-  });
-  useEffect(() => {
-    const timer = setInterval(reduceCountdown, 1000);
-    return () => clearInterval(timer);
-  }, [reduceCountdown]);
+  const { isTimeout, reset } = useTimerContext();
 
   const { request, pending } = useRequest<CreateGuessResponse>();
   const { error } = useToast({ actionName: 'Guess' });
@@ -43,6 +34,7 @@ function NextTeamTimerButton({ teamId, gameId, round, onTimeout }: NextTeamTimer
         type: GuessTypes.timedOut,
       });
       onTimeout();
+      reset();
     } catch (err) {
       handleError(err);
     }
@@ -50,7 +42,7 @@ function NextTeamTimerButton({ teamId, gameId, round, onTimeout }: NextTeamTimer
 
   return (
     <Button type="primary" danger onClick={handleTimeout} disabled={!isTimeout} loading={pending}>
-      {isTimeout ? 'Next Team' : `00:0${countDown}`}
+      Next Team
     </Button>
   );
 }
