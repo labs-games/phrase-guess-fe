@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { Row } from 'components/common';
 import { Guess } from 'utils/apiResponseShapes';
-import { GuessStatuses } from 'utils/enums';
+import { GuessStatuses, GuessTypes } from 'utils/enums';
 
 const StyledRow = styled(Row)`
   flex-wrap: wrap;
@@ -27,7 +27,7 @@ function WrongGuessesRow({ pastGuesses }: WrongGuessesRowProps) {
   return (
     <StyledRow>
       {pastGuesses
-        .filter(g => g.status === GuessStatuses.wrong)
+        .filter(g => g.status === GuessStatuses.wrong && g.type === GuessTypes.letter)
         .map(g => (
           <WrongGuess>{g.value}</WrongGuess>
         ))}
