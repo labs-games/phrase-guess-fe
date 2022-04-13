@@ -9,10 +9,16 @@ const RowWrapper = styled.div`
   padding: 24px;
   border: 1px solid black;
   margin-bottom: 24px;
-  font-size: 36px;
+  display: flex;
+  flex-wrap: wrap;
+`;
+
+const WordWrapper = styled.div`
+  margin-right: 48px;
 
   > pre {
-    white-space: break-spaces;
+    font-family: 'Courier New', sans-serif;
+    font-size: 36px;
     margin-bottom: 0;
   }
 `;
@@ -29,9 +35,7 @@ const transformPhrase = (phrase: string, pastGuesses: Guess[]): string => {
   let transformedPhrase = '';
   for (const char of phrase) {
     const hasLetterGuessed = pastGuesses.find(g => g.value === char) !== undefined;
-    if (char === ' ') {
-      transformedPhrase += '  ';
-    } else if (hasLetterGuessed || isPhraseGuessed) {
+    if (hasLetterGuessed || isPhraseGuessed) {
       transformedPhrase += `${char} `;
     } else {
       transformedPhrase += '_ ';
@@ -43,7 +47,11 @@ const transformPhrase = (phrase: string, pastGuesses: Guess[]): string => {
 function LettersRow({ pastGuesses, phrase }: LettersRowProps) {
   return (
     <RowWrapper>
-      <pre>{transformPhrase(phrase, pastGuesses)}</pre>
+      {phrase.split(' ').map(word => (
+        <WordWrapper>
+          <pre>{transformPhrase(word, pastGuesses)}</pre>
+        </WordWrapper>
+      ))}
     </RowWrapper>
   );
 }
