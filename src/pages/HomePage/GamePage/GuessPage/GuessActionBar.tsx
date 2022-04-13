@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { Button, Input, Select, Space } from 'antd';
+import { Button, Input, Select, Space, Radio } from 'antd';
 
 import useEventCallback from 'hooks/useEventCallback';
 import useFetchErrorHandler from 'hooks/useFetchErrorHandler';
@@ -72,13 +72,13 @@ function GuessActionBar({ pastGuesses, round, gameId, onGuess, teams }: GuessAct
 
   return (
     <Space>
-      <Select value={type} onChange={setType}>
+      <Radio.Group value={type} onChange={e => setType(e.target.value)}>
         {[GuessTypes.letter, GuessTypes.phrase].map(typeChoice => (
-          <Select.Option value={typeChoice} key={typeChoice}>
+          <Radio.Button value={typeChoice} key={typeChoice}>
             {GuessTypeDisplays[typeChoice]}
-          </Select.Option>
+          </Radio.Button>
         ))}
-      </Select>
+      </Radio.Group>
       <StyledSelect value={teamId} onChange={setTeamId}>
         {teams.map(team => (
           <Select.Option value={team.id} key={team.id}>
