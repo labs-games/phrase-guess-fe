@@ -2,7 +2,7 @@ import findIndex from 'lodash/findIndex';
 import last from 'lodash/last';
 
 import { Guess, Round } from './apiResponseShapes';
-import { GuessStatuses, GuessTypes } from './enums';
+import { GuessTypes } from './enums';
 
 export const getNextTeamIdToGuess = (teamIdOrderings: number[], pastGuesses: Guess[]): number => {
   const nonPhraseGuesses = pastGuesses.filter(g => g.type !== GuessTypes.phrase);
@@ -15,10 +15,6 @@ export const getNextTeamIdToGuess = (teamIdOrderings: number[], pastGuesses: Gue
   const lastTeamIndex = findIndex(teamIdOrderings, id => id === lastTeamId);
   if (lastTeamIndex === undefined) {
     return teamIdOrderings[0];
-  }
-
-  if (lastGuess.status === GuessStatuses.correct) {
-    return lastTeamId;
   }
 
   const nextTeamIndex = (lastTeamIndex + 1) % teamIdOrderings.length;
