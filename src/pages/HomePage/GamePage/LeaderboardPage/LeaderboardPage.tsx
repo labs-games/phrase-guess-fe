@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom';
 
 import { PageHeader, Table } from 'antd';
 
+import Leaderboard from 'components/Leaderboard';
 import { Paper } from 'components/common';
 import useApiQuery from 'hooks/useApiQuery';
 import {
@@ -17,7 +18,6 @@ import {
 } from 'utils/apiResponseShapes';
 import { GameParams } from 'utils/interfaces';
 
-import LeaderboardGraph from './LeaderboardGraph';
 import NextRoundButton from './NextRoundButton';
 
 const columns = [
@@ -78,7 +78,11 @@ function LeaderboardPage() {
         }
       />
       {gameResponse && teamsResponse && (
-        <LeaderboardGraph teamLeaderboards={gameResponse.leaderboard} teams={teamsResponse.items} />
+        <Leaderboard
+          height={700}
+          teamLeaderboards={gameResponse.leaderboard}
+          teams={teamsResponse.items}
+        />
       )}
     </Paper>
   );

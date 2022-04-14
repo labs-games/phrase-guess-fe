@@ -18,7 +18,7 @@ const WordWrapper = styled.div`
 
   > pre {
     font-family: 'Courier New', sans-serif;
-    font-size: 36px;
+    font-size: 40px;
     margin-bottom: 0;
   }
 `;

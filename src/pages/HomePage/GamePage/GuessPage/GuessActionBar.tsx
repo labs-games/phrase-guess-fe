@@ -19,6 +19,10 @@ import { getNextTeamIdToGuess } from 'utils/nextTeam';
 import NextTeamTimerButton from './NextTeamTimerButton';
 import { useTimerContext } from './TimerContext';
 
+const StyledSpace = styled(Space)`
+  margin-bottom: 24px;
+`;
+
 const StyledSelect = styled(Select)`
   min-width: 150px;
 `;
@@ -110,7 +114,7 @@ function GuessActionBar({
 
   const { url } = useRouteMatch();
   return (
-    <Space>
+    <StyledSpace>
       <Radio.Group value={type} onChange={e => setType(e.target.value)}>
         {[GuessTypes.letter, GuessTypes.phrase].map(typeChoice => (
           <Radio.Button value={typeChoice} key={typeChoice}>
@@ -149,7 +153,7 @@ function GuessActionBar({
           <Link to={url.replace(/rounds+.+$/, 'leaderboard')}>Go to leaderboard</Link>
         </Button>
       )}
-    </Space>
+    </StyledSpace>
   );
 }
 

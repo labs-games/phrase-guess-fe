@@ -5,6 +5,7 @@ import styled from 'styled-components';
 
 import useApiQuery from 'hooks/useApiQuery';
 import {
+  GetGameResponse,
   GetPhraseResponse,
   GetResourcesResponse,
   Guess,
@@ -12,6 +13,7 @@ import {
   Team,
 } from 'utils/apiResponseShapes';
 
+import Leaderboard from '../../../../components/Leaderboard';
 import GuessActionBar from './GuessActionBar';
 import LettersRow from './LettersRow';
 import TimerProvider from './TimerContext';
@@ -28,9 +30,12 @@ interface RoundOngoingPageProps {
 }
 
 function RoundOngoingPage({ round, gameId }: RoundOngoingPageProps) {
-  const { response, refresh } = useApiQuery<GetResourcesResponse<Guess>>(
-    `/api/games/${gameId}/rounds/${round.id}/guesses/`
+  const { response: gameResponse, refresh: refreshGame } = useApiQuery<GetGameResponse>(
+    `/api/games/${gameId}/`
   );
+  const { response: guessesResponse, refresh: refreshGuess } = useApiQuery<
+    GetResourcesResponse<Guess>
+  >(`/api/games/${gameId}/rounds/${round.id}/guesses/`);
   const { response: teamsResponse } = useApiQuery<GetResourcesResponse<Team>>(
     `/api/games/${gameId}/teams/`
   );
@@ -40,23 +45,32 @@ function RoundOngoingPage({ round, gameId }: RoundOngoingPageProps) {
 
   const [isEnded, setIsEnded] = useState(false);
   return (
-    response &&
+    guessesResponse &&
+    gameResponse &&
     teamsResponse &&
     phraseResponse && (
       <PageWrapper>
         <TimerProvider>
           <TimerDisplay />
-          <LettersRow pastGuesses={response.items} phrase={phraseResponse.value} />
-          <WrongGuessesRow pastGuesses={response.items} />
+          <LettersRow pastGuesses={guessesResponse.items} phrase={phraseResponse.value} />
+          <WrongGuessesRow pastGuesses={guessesResponse.items} />
           <GuessActionBar
-            key={hash(response)}
-            pastGuesses={response.items}
+            key={hash(guessesResponse)}
+            pastGuesses={guessesResponse.items}
             round={round}
             gameId={gameId}
             teams={teamsResponse.items}
-            onGuess={refresh}
+            onGuess={() => {
+              refreshGuess();
+              refreshGame();
+            }}
             isEnded={isEnded}
             setIsEnded={setIsEnded}
+          />
+          <Leaderboard
+            height={400}
+            teamLeaderboards={gameResponse.leaderboard}
+            teams={teamsResponse.items}
           />
         </TimerProvider>
       </PageWrapper>
