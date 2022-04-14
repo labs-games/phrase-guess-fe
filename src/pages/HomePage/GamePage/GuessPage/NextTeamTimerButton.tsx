@@ -16,12 +16,19 @@ interface NextTeamTimerButtonProps {
   round: Round;
   gameId: number;
   onTimeout: () => void;
+  isEnded: boolean;
 }
 
-function NextTeamTimerButton({ teamId, gameId, round, onTimeout }: NextTeamTimerButtonProps) {
-  const { isTimeout, reset } = useTimerContext();
+function NextTeamTimerButton({
+  teamId,
+  gameId,
+  round,
+  onTimeout,
+  isEnded,
+}: NextTeamTimerButtonProps) {
+  const { isTimeout } = useTimerContext();
 
-  const { request, pending } = useRequest<CreateGuessResponse>();
+  const { request } = useRequest<CreateGuessResponse>();
   const { error } = useToast({ actionName: 'Guess' });
   const { handleError } = useFetchErrorHandler<CreateGuessResponse>({
     defaultHandler: () => error(),
@@ -34,14 +41,13 @@ function NextTeamTimerButton({ teamId, gameId, round, onTimeout }: NextTeamTimer
         type: GuessTypes.timedOut,
       });
       onTimeout();
-      reset();
     } catch (err) {
       handleError(err);
     }
   });
 
   return (
-    <Button type="primary" danger onClick={handleTimeout} disabled={!isTimeout} loading={pending}>
+    <Button type="primary" danger onClick={handleTimeout} disabled={!isTimeout || isEnded}>
       Next Team
     </Button>
   );

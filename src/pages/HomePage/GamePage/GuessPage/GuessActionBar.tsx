@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-import { useHistory, useRouteMatch } from 'react-router-dom';
+import hash from 'object-hash';
+import { useRouteMatch, Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { Button, Input, Select, Space, Radio } from 'antd';
+import { CheckCircleFilled, CloseCircleFilled } from '@ant-design/icons';
+import { Button, Input, Select, Space, Radio, message } from 'antd';
 
 import useEventCallback from 'hooks/useEventCallback';
 import useFetchErrorHandler from 'hooks/useFetchErrorHandler';
-import useIsOpen from 'hooks/useIsOpen';
 import useRequest from 'hooks/useRequest';
 import useToast from 'hooks/useToast';
 import { CreateGuessResponse, Guess, Round, Team } from 'utils/apiResponseShapes';
@@ -15,9 +16,8 @@ import { GuessTypeDisplays } from 'utils/displays';
 import { GuessStatuses, GuessTypes } from 'utils/enums';
 import { getNextTeamIdToGuess } from 'utils/nextTeam';
 
-import GuessCorrectDialog from './GuessCorrectDialog';
-import GuessWrongDialog from './GuessWrongDialog';
 import NextTeamTimerButton from './NextTeamTimerButton';
+import { useTimerContext } from './TimerContext';
 
 const StyledSelect = styled(Select)`
   min-width: 150px;
@@ -27,30 +27,50 @@ const StyledInput = styled(Input)`
   min-width: 300px;
 `;
 
+const Message = styled.div`
+  font-size: 24px;
+  text-align: left;
+`;
+
+const MessageScore = styled.span`
+  font-weight: bold;
+  color: green;
+`;
+
+const messageRootClass = 'message-root'; // see App.css for usage
+
 interface GuessActionBarProps {
   onGuess: () => void;
   teams: Team[];
   pastGuesses: Guess[];
   round: Round;
   gameId: number;
+  isEnded: boolean;
+  setIsEnded: (shouldEnd: boolean) => void;
 }
 
-function GuessActionBar({ pastGuesses, round, gameId, onGuess, teams }: GuessActionBarProps) {
+function GuessActionBar({
+  pastGuesses,
+  round,
+  gameId,
+  onGuess,
+  teams,
+  isEnded,
+  setIsEnded,
+}: GuessActionBarProps) {
+  const { reset } = useTimerContext();
   const [type, setType] = useState(GuessTypes.letter);
   const [teamId, setTeamId] = useState(getNextTeamIdToGuess(round.teamOrdering, pastGuesses));
   const [value, setValue] = useState('');
-  const [guessResponse, setGuessResponse] = useState(null);
 
-  const { request, pending } = useRequest<CreateGuessResponse>();
+  const { request } = useRequest<CreateGuessResponse>();
   const { error } = useToast({ actionName: 'Guess' });
   const { handleError } = useFetchErrorHandler<CreateGuessResponse>({
     defaultHandler: () => error(),
   });
 
-  const [correctDialogOpen, setCorrectDialogOpen, handleCorrectDialogClose] = useIsOpen();
-  const [wrongDialogOpen, setWrongDialogOpen, handleWrongDialogClose] = useIsOpen();
-  const { push } = useHistory();
-  const { url } = useRouteMatch();
+  const hashedGuesses = hash(pastGuesses);
+  useEffect(() => reset(), [reset, hashedGuesses]);
 
   const handleSubmit = useEventCallback(async () => {
     try {
@@ -59,17 +79,36 @@ function GuessActionBar({ pastGuesses, round, gameId, onGuess, teams }: GuessAct
         type,
         value,
       });
-      setGuessResponse(response);
+      onGuess();
+      if (response.shouldEnd) {
+        setIsEnded(true);
+      }
+      const team = teams.find(t => t.id === response.teamId);
+      const teamName = team ? team.name : 'Team';
       if (response.status === GuessStatuses.correct) {
-        setCorrectDialogOpen(true);
-      } else {
-        setWrongDialogOpen(true);
+        message.success({
+          content: (
+            <Message>
+              Correct! <br />
+              {teamName} obtained <MessageScore>{response.score}</MessageScore> score
+            </Message>
+          ),
+          icon: <CheckCircleFilled style={{ fontSize: 32, marginRight: 12 }} />,
+          className: messageRootClass,
+        });
+      } else if (response.status === GuessStatuses.wrong) {
+        message.error({
+          content: <Message>Wrong</Message>,
+          icon: <CloseCircleFilled style={{ fontSize: 32, marginRight: 12 }} />,
+          className: messageRootClass,
+        });
       }
     } catch (err) {
       handleError(err);
     }
   });
 
+  const { url } = useRouteMatch();
   return (
     <Space>
       <Radio.Group value={type} onChange={e => setType(e.target.value)}>
@@ -95,23 +134,21 @@ function GuessActionBar({ pastGuesses, round, gameId, onGuess, teams }: GuessAct
           )
         }
       />
-      <Button type="primary" onClick={handleSubmit} loading={pending} disabled={value === ''}>
+      <Button type="primary" onClick={handleSubmit} disabled={value === '' || isEnded}>
         Guess
       </Button>
-      <NextTeamTimerButton teamId={teamId} round={round} gameId={gameId} onTimeout={onGuess} />
-      <GuessCorrectDialog
-        teams={teams}
-        guessResponse={guessResponse}
-        handleClose={handleCorrectDialogClose}
-        isOpen={correctDialogOpen}
-        refresh={onGuess}
-        goToLeaderboard={() => push(url.replace(/rounds+.+$/, 'leaderboard'))}
+      <NextTeamTimerButton
+        teamId={teamId}
+        round={round}
+        gameId={gameId}
+        onTimeout={onGuess}
+        isEnded={isEnded}
       />
-      <GuessWrongDialog
-        handleClose={handleWrongDialogClose}
-        isOpen={wrongDialogOpen}
-        refresh={onGuess}
-      />
+      {isEnded && (
+        <Button type="primary">
+          <Link to={url.replace(/rounds+.+$/, 'leaderboard')}>Go to leaderboard</Link>
+        </Button>
+      )}
     </Space>
   );
 }

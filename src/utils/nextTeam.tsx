@@ -14,6 +14,7 @@ export const getNextTeamIdToGuess = (teamIdOrderings: number[], pastGuesses: Gue
   const lastTeamId = lastGuess.teamId;
   const lastTeamIndex = findIndex(teamIdOrderings, id => id === lastTeamId);
   if (lastTeamIndex === undefined) {
+    // This should never happened
     return teamIdOrderings[0];
   }
 

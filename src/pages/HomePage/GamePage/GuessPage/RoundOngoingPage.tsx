@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import hash from 'object-hash';
 import styled from 'styled-components';
@@ -37,6 +37,8 @@ function RoundOngoingPage({ round, gameId }: RoundOngoingPageProps) {
   const { response: phraseResponse } = useApiQuery<GetPhraseResponse>(
     `/api/games/${gameId}/phrases/${round.phraseId}/`
   );
+
+  const [isEnded, setIsEnded] = useState(false);
   return (
     response &&
     teamsResponse &&
@@ -52,7 +54,9 @@ function RoundOngoingPage({ round, gameId }: RoundOngoingPageProps) {
             round={round}
             gameId={gameId}
             teams={teamsResponse.items}
-            onGuess={() => refresh()}
+            onGuess={refresh}
+            isEnded={isEnded}
+            setIsEnded={setIsEnded}
           />
         </TimerProvider>
       </PageWrapper>

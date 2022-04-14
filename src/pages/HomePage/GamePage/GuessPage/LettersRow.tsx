@@ -47,8 +47,9 @@ const transformPhrase = (phrase: string, pastGuesses: Guess[]): string => {
 function LettersRow({ pastGuesses, phrase }: LettersRowProps) {
   return (
     <RowWrapper>
-      {phrase.split(' ').map(word => (
-        <WordWrapper>
+      {phrase.split(' ').map((word, idx) => (
+        // eslint-disable-next-line react/no-array-index-key
+        <WordWrapper key={`${word}-${idx}`}>
           <pre>{transformPhrase(word, pastGuesses)}</pre>
         </WordWrapper>
       ))}

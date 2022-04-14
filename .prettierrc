@@ -7,8 +7,8 @@
   "arrowParens": "avoid",
   "importOrder": [
     "^react$",
-    "^(?:(?!(@seaweb|antd|components|hooks|utils|images|pages|./|../)))",
-    "^antd",
+    "^(?:(?!(@seaweb|antd|@ant-design|components|hooks|utils|images|pages|./|../)))",
+    "^antd|@ant-design",
     "^@seaweb",
     "^(components|hooks|utils|images|pages)",
     "^[./]"
