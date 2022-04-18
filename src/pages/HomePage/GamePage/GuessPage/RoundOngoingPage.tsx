@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import hash from 'object-hash';
 import styled from 'styled-components';
 
+import Leaderboard from 'components/Leaderboard';
 import useApiQuery from 'hooks/useApiQuery';
 import {
   GetGameResponse,
@@ -13,7 +14,6 @@ import {
   Team,
 } from 'utils/apiResponseShapes';
 
-import Leaderboard from '../../../../components/Leaderboard';
 import GuessActionBar from './GuessActionBar';
 import LettersRow from './LettersRow';
 import TimerProvider from './TimerContext';

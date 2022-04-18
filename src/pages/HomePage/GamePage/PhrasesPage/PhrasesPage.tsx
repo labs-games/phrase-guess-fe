@@ -11,14 +11,33 @@ import { Phrase, GetResourcesResponse } from 'utils/apiResponseShapes';
 import { GameParams } from 'utils/interfaces';
 
 import CreatePhraseDialog from './CreatePhraseDialog';
+import DeletePhraseIconButton from './DeletePhraseIconButton';
 
-const columns = [{ title: 'Phrase', dataIndex: 'value', key: 'value' }];
+interface PhraseTableRecord {
+  refresh: () => void;
+  gameId: number;
+}
+
+const columns = [
+  { title: 'Phrase', dataIndex: 'value', key: 'value' },
+  {
+    title: '',
+    dataIndex: 'phrase',
+    key: 'phrase',
+    render: (phrase: Phrase, record: PhraseTableRecord) => (
+      <DeletePhraseIconButton phrase={phrase} gameId={record.gameId} onDelete={record.refresh} />
+    ),
+    width: 80,
+  },
+];
 
 interface PhrasesTableProps {
   phrases: Phrase[];
+  refresh: () => void;
+  gameId: number;
 }
 
-function PhrasesTable({ phrases }: PhrasesTableProps) {
+function PhrasesTable({ phrases, refresh, gameId }: PhrasesTableProps) {
   return (
     <Table
       bordered
@@ -27,12 +46,16 @@ function PhrasesTable({ phrases }: PhrasesTableProps) {
         id: p.id,
         key: p.id,
         value: p.value,
+        phrase: p,
+        refresh,
+        gameId,
       }))}
     />
   );
 }
 
 function PhrasesPage() {
+  // refactor TODO: make gameId and response refresh in context, no need to pass down this much
   const { gameId } = useParams<GameParams>();
   const { response, refresh } = useApiQuery<GetResourcesResponse<Phrase>>(
     `/api/games/${gameId}/phrases/`
@@ -56,7 +79,7 @@ function PhrasesPage() {
           />,
         ]}
       />
-      {response && <PhrasesTable phrases={response.items} />}
+      {response && <PhrasesTable phrases={response.items} gameId={+gameId} refresh={refresh} />}
     </Paper>
   );
 }

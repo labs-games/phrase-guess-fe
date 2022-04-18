@@ -12,14 +12,33 @@ import { Team, GetResourcesResponse } from 'utils/apiResponseShapes';
 import { GameParams } from 'utils/interfaces';
 
 import CreateTeamDialog from './CreateTeamDialog';
+import DeleteTeamIconButton from './DeleteTeamIconButton';
 
-const columns = [{ title: 'Team', dataIndex: 'name', key: 'name' }];
+interface TeamTableRecord {
+  refresh: () => void;
+  gameId: number;
+}
+
+const columns = [
+  { title: 'Team', dataIndex: 'name', key: 'name' },
+  {
+    title: '',
+    dataIndex: 'team',
+    key: 'team',
+    render: (team: Team, record: TeamTableRecord) => (
+      <DeleteTeamIconButton team={team} gameId={record.gameId} onDelete={record.refresh} />
+    ),
+    width: 80,
+  },
+];
 
 interface TeamsTableProps {
   teams: Team[];
+  refresh: () => void;
+  gameId: number;
 }
 
-function TeamsTable({ teams }: TeamsTableProps) {
+function TeamsTable({ teams, refresh, gameId }: TeamsTableProps) {
   return (
     <Table
       bordered
@@ -28,12 +47,16 @@ function TeamsTable({ teams }: TeamsTableProps) {
         id: t.id,
         key: t.id,
         name: t.name,
+        team: t,
+        refresh,
+        gameId,
       }))}
     />
   );
 }
 
 function TeamsPage() {
+  // refactor TODO: make gameId and response refresh in context, no need to pass down this much
   const { gameId } = useParams<GameParams>();
   const { response, refresh } = useApiQuery<GetResourcesResponse<Team>>(
     `/api/games/${gameId}/teams/`
@@ -62,7 +85,7 @@ function TeamsPage() {
             : []
         }
       />
-      {response && <TeamsTable teams={response.items} />}
+      {response && <TeamsTable teams={response.items} gameId={+gameId} refresh={refresh} />}
     </Paper>
   );
 }
