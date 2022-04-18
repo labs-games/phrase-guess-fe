@@ -65,6 +65,11 @@ function GuessActionBar({
   const { reset } = useTimerContext();
   const [type, setType] = useState(GuessTypes.letter);
   const [teamId, setTeamId] = useState(getNextTeamIdToGuess(round.teamOrdering, pastGuesses));
+  const changeTeamIdManually = (newTeamId: number) => {
+    setTeamId(newTeamId);
+    reset();
+  };
+
   const [value, setValue] = useState('');
 
   const { request } = useRequest<CreateGuessResponse>();
@@ -122,7 +127,7 @@ function GuessActionBar({
           </Radio.Button>
         ))}
       </Radio.Group>
-      <StyledSelect value={teamId} onChange={setTeamId}>
+      <StyledSelect value={teamId} onChange={changeTeamIdManually}>
         {teams.map(team => (
           <Select.Option value={team.id} key={team.id}>
             {team.name}
