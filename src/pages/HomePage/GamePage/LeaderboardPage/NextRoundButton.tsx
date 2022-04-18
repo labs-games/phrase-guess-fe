@@ -16,9 +16,10 @@ interface NextRoundButtonProps {
   pastRounds: Round[];
   teams: Team[];
   gameId: number;
+  disabled: boolean;
 }
 
-function NextRoundButton({ pastRounds, teams, gameId }: NextRoundButtonProps) {
+function NextRoundButton({ pastRounds, teams, gameId, disabled }: NextRoundButtonProps) {
   const name = `Round ${pastRounds.length + 1}`;
   const startingTeamId = getNextTeamIdToStartRound(
     teams.map(t => t.id),
@@ -52,7 +53,7 @@ function NextRoundButton({ pastRounds, teams, gameId }: NextRoundButtonProps) {
       type="primary"
       onClick={handleSubmit}
       loading={pending}
-      disabled={name === ''}
+      disabled={disabled}
     >
       Next Round
     </Button>

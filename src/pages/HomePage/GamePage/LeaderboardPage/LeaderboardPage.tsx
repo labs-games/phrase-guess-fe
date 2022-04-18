@@ -12,6 +12,7 @@ import useApiQuery from 'hooks/useApiQuery';
 import {
   GetGameResponse,
   GetResourcesResponse,
+  Phrase,
   Round,
   Team,
   TeamLeaderboard,
@@ -60,18 +61,22 @@ function LeaderboardPage() {
   const { response: roundsResponse } = useApiQuery<GetResourcesResponse<Round>>(
     `/api/games/${gameId}/rounds/`
   );
+  const { response: phraseResponse } = useApiQuery<GetResourcesResponse<Phrase>>(
+    `/api/games/${gameId}/phrases/`
+  );
 
   return (
     <Paper>
       <PageHeader
         title="Leaderboard"
         extra={
-          roundsResponse && teamsResponse
+          roundsResponse && teamsResponse && phraseResponse
             ? [
                 <NextRoundButton
                   gameId={+gameId}
                   pastRounds={roundsResponse.items}
                   teams={teamsResponse.items}
+                  disabled={roundsResponse.items.length === phraseResponse.items.length}
                 />,
               ]
             : []
