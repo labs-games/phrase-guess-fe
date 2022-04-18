@@ -20,6 +20,7 @@ const WordWrapper = styled.div`
     font-family: 'Courier New', sans-serif;
     font-size: 40px;
     margin-bottom: 0;
+    font-weight: bold;
   }
 `;
 
