@@ -40,12 +40,18 @@ const createOption = (teamsWithScore: TeamWithScore[]): echarts.EChartOption => 
     },
     grid: {
       top: 30,
-      bottom: 30,
+      bottom: 50,
       left: 30,
       right: 30,
     },
     xAxis: {
-      data: teamsWithScore.map(t => t.name),
+      data: teamsWithScore.map(t => ({
+        value: t.name,
+        textStyle: {
+          fontWeight: 'bold',
+        },
+      })),
+      axisLabel: { rotate: 45 },
     },
     yAxis: {},
     series: [
